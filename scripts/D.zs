@@ -131,6 +131,7 @@ zenClass D_zs {
     Checks if stored data is null
   */
   function isNil() as bool { return isNull(d); }
+  function isPresent() as bool { return isNull(d); }
 }
 
 global D as function(IData)D_zs = function (data as IData) as D_zs  {
