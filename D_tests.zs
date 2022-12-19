@@ -2,6 +2,8 @@
 	Tests for D.zs
 */
 
+#norun
+
 import crafttweaker.data.IData;
 
 var d = D({Fluid:{name:"water"}, A:[{B:1},{C:2}], a1:true});
