@@ -134,6 +134,12 @@ zenClass D_zs {
   */
   function isNil() as bool { return isNull(d); }
   function isPresent() as bool { return !isNull(d); }
+
+  /*
+    Move pointer inside data
+  */
+  function move(path as string) as D_zs { d = get(path, null); return this; }
+
 }
 
 global D as function(IData)D_zs = function (data as IData) as D_zs  {
