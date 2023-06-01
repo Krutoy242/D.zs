@@ -26,7 +26,7 @@ Example
 import crafttweaker.data.IData;
 #priority 4010
 
-#loader crafttweaker reloadableevents
+#reloadable
 
 zenClass D_zs {
   /*
