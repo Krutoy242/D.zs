@@ -6,7 +6,6 @@ Use global function D(data) to wrap IData and get values from it.
 
 Source: https://github.com/Krutoy242/D.zs
 
-
 Example
   var data as IData = {
     ench: [
@@ -22,11 +21,10 @@ Example
   D(data).getInt("ench[0].lvl");
 */
 
+#priority 4010
+#reloadable
 
 import crafttweaker.data.IData;
-#priority 4010
-
-#reloadable
 
 zenClass D_zs {
   /*
@@ -34,7 +32,7 @@ zenClass D_zs {
   */
   var d as IData;
 
-	zenConstructor(data as IData) {
+  zenConstructor(data as IData) {
     d = data;
   }
 
@@ -57,20 +55,21 @@ zenClass D_zs {
   function get(path as string, default as IData) as IData {
     val def as IData = isNull(default) ? null : default.d;
 
-    if (isNull(path) || path == "" || isNull(d)) return def;
+    if (isNull(path) || path == '' || isNull(d)) return def;
 
     var descend as IData = null;
-    for tag in path.split("[\\.\\[\\]]") {
-      if (tag == "") continue;
-      if(isNull(descend)) descend = d;
+    for tag in path.split('[\\.\\[\\]]') {
+      if (tag == '') continue;
+      if (isNull(descend)) descend = d;
 
       var member as IData = null;
-      if (tag.matches("\\d+")) {
-        var num = tag as int;
+      if (tag.matches('\\d+')) {
+        val num = tag as int;
         if (descend.length > num) {
           member = descend[num];
         }
-      } else if(!isNull(descend.asMap())) {
+      }
+      else if (!isNull(descend.asMap())) {
         member = descend.memberGet(tag);
       }
       if (!isNull(member)) descend = member;
@@ -119,15 +118,15 @@ zenClass D_zs {
   function check(path as string) as bool { return !isNull(get(path, null)); }
   function check(paths as string[]) as bool {
     for f in paths {
-      if(!check(f)) return false;
+      if (!check(f)) return false;
     }
     return true;
   }
 
-  /*  
+  /*
     Safe asString() call (prevents exception if stored data is null)
   */
-  function asString() as string { return isNull(d) ? "null" : d.asString(); }
+  function asString() as string { return isNull(d) ? 'null' : d.asString(); }
 
   /*
     Checks if stored data is null
@@ -140,7 +139,7 @@ zenClass D_zs {
   */
   function move(path as string) as D_zs { d = get(path, null); return this; }
 
-/* 
+/*
 
   // WIP: Functions for managing arrays and tables of IData
 
@@ -183,7 +182,7 @@ zenClass D_zs {
     var result = [] as IData;
 
     for i,v in dataList.asList() {
-      
+
       var elem = fnc(v,i,newData);
       if (!isNull(elem)) {
         result = result + [elem] as IData;
@@ -196,11 +195,10 @@ zenClass D_zs {
       return null;
   }
 
-  
   function unite(
-    dataList as IData, 
-    newData as IData, 
-    predicate as function(IData,int,IData)bool, 
+    dataList as IData,
+    newData as IData,
+    predicate as function(IData,int,IData)bool,
     mutateFnc as function(IData,int,IData)IData
   ) as IData {
 
@@ -221,10 +219,10 @@ zenClass D_zs {
     }
 
     return dataList + [newData] as IData;
-  } 
+  }
 */
 }
 
-global D as function(IData)D_zs = function (data as IData) as D_zs  {
+global D as function(IData)D_zs = function (data as IData) as D_zs {
   return D_zs(data);
 };

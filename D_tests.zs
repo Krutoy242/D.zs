@@ -4,50 +4,48 @@
 
 #norun
 
-import crafttweaker.data.IData;
+val d = D({ Fluid: { name: 'water' }, A: [{ B: 1 }, { C: 2 }], a1: true });
 
-var d = D({Fluid:{name:"water"}, A:[{B:1},{C:2}], a1:true});
+print('-- get() --');
+print(d.get()); // {Fluid:{name:"water"}, A:[{B:1},{C:2}]}
+print(d.get('Fluid.name')); // water
+print(d.get('a1')); // true
+print(d.get('A[1].C')); // 2
+print(d.get('Q[6]', { d: 6 })); // 6
+print(isNull(d.get('...'))); // true
+print(isNull(d.get('A[4].C'))); // true
+print(isNull(D(null).get(''))); // true
 
-print("-- get() --");
-print( d.get() );                 // {Fluid:{name:"water"}, A:[{B:1},{C:2}]}
-print( d.get("Fluid.name") );     // water
-print( d.get("a1") );             // true
-print( d.get("A[1].C") );         // 2
-print( d.get("Q[6]", {d:6}) );    // 6
-print( isNull(d.get("...")) );    // true
-print( isNull(d.get("A[4].C")) ); // true
-print( isNull(D(null).get("")) ); // true
+print('-- get<T>() --');
+print(d.getInt('A[0].B')); // 1
+print(d.getInt('Q[6]', 7)); // 7
+print(d.getInt('Q[6]')); // 0
+print(D(true).getBool()); // true
+print(D([3, 4, 5]).getInt('1')); // 4
+print(D([3, 4, 5]).getInt('6')); // 0
+print(D('hello').getInt('6')); // 0
+print(D('hello').getString()); // hello
+print(D(true).getBool()); // true
+print(D(true).getInt()); // 1
+print(D([true]).getBool(0)); // true
+print(D(true).getBool('A.B')); // false
 
-print("-- get<T>() --");
-print( d.getInt("A[0].B") );      // 1
-print( d.getInt("Q[6]", 7) );     // 7
-print( d.getInt("Q[6]") );        // 0
-print( D(true).getBool() );       // true
-print( D([3,4,5]).getInt("1") );  // 4
-print( D([3,4,5]).getInt("6") );  // 0
-print( D("hello").getInt("6") );  // 0
-print( D("hello").getString() );  // hello
-print( D(true).getBool() );       // true
-print( D(true).getInt() );        // 1
-print( D([true]).getBool(0) );    // true
-print( D(true).getBool("A.B") );  // false
+print('-- check() --');
+print(d.check('A.B')); // false
+print(d.check(['A'])); // true
+print(d.check(['A', 'Fluid'])); // true
 
-print("-- check() --");
-print( d.check("A.B") );          // false
-print( d.check(["A"]) );          // true
-print( d.check(["A", "Fluid"]) ); // true
+print('-- asString() --');
+print(D({}).asString()); // "{}"
+print(D({ A: 1 }).asString()); // "{A: 1}"
+print(D(null).asString()); // "null"
 
-print("-- asString() --");
-print( D({}).asString() );        // "{}"
-print( D({A:1}).asString() );     // "{A: 1}"
-print( D(null).asString() );      // "null"
+print('-- isNil() --');
+print(D({}).isNil()); // false
+print(D(null).isNil()); // true
 
-print("-- isNil() --");
-print( D({}).isNil() );           // false
-print( D(null).isNil() );         // true
-
-print("-- known Errors --");
-print( D("hello").getInt() );     // non-exceptional [ERROR]: DataString hello cannot be parsed to Int, substituting 0!
+print('-- known Errors --');
+print(D('hello').getInt()); // non-exceptional [ERROR]: DataString hello cannot be parsed to Int, substituting 0!
 
 /*
 print("-- Stress --");
